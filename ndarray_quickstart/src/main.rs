@@ -3,7 +3,8 @@ use ndarray::Dimension;
 // use ndarray::Shape;
 use ndarray::ShapeBuilder;
 use num_traits::Zero;
-
+use std::collections::BTreeSet;
+use std::collections::HashMap;
 // trait Real {}
 
 // impl Real for f32 {}
@@ -37,6 +38,20 @@ fn main() {
 
     let a: Array<f64, _> = zeros_with_dim((1, 3, 2));
     println!("{:?}", a);
+
+    let arr = Array::from_vec(vec![1, 2, 2, 3, 1])
+        .into_shape_with_order(ndarray::IxDyn(&[5]))
+        .unwrap();
+
+    let mut map = HashMap::new();
+    let flat_view: ndarray::iter::Iter<'_, i32, ndarray::Dim<ndarray::IxDynImpl>> =
+        arr.view().into_dyn().into_iter();
+
+    for item in flat_view {
+        *map.entry(item).or_insert(0) += 1;
+    }
+
+    println!("{:?}", map);
     let b = (1, 3, 2);
     print_type(&b);
 }
