@@ -52,6 +52,10 @@ fn main() {
     }
 
     println!("{:?}", map);
+
+    let len_map = map.len();
+    println!("{:?}", len_map);
+
     let b = (1, 3, 2);
     print_type(&b);
 }
