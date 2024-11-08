@@ -3,7 +3,6 @@ use ndarray::Dimension;
 // use ndarray::Shape;
 use ndarray::ShapeBuilder;
 use num_traits::Zero;
-use std::collections::BTreeSet;
 use std::collections::HashMap;
 // trait Real {}
 
@@ -28,6 +27,19 @@ where
     Array::<T, _>::zeros(dim)
 }
 
+fn array_value_counts(
+    arr: &ndarray::ArrayBase<ndarray::OwnedRepr<i32>, ndarray::Dim<ndarray::IxDynImpl>>,
+) -> HashMap<&i32, i32> {
+    let mut map = HashMap::new();
+    let flat_view: ndarray::iter::Iter<'_, i32, ndarray::Dim<ndarray::IxDynImpl>> =
+        arr.view().into_dyn().into_iter();
+
+    for item in flat_view {
+        *map.entry(item).or_insert(0) += 1;
+    }
+    map
+}
+
 fn print_type<T>(_: &T) {
     println!("{:?}", std::any::type_name::<T>());
 }
@@ -44,13 +56,7 @@ fn main() {
         .into_shape_with_order(ndarray::IxDyn(&[5]))
         .unwrap();
 
-    let mut map = HashMap::new();
-    let flat_view: ndarray::iter::Iter<'_, i32, ndarray::Dim<ndarray::IxDynImpl>> =
-        arr.view().into_dyn().into_iter();
-
-    for item in flat_view {
-        *map.entry(item).or_insert(0) += 1;
-    }
+    let map = array_value_counts(&arr);
 
     println!("{:?}", map);
 
