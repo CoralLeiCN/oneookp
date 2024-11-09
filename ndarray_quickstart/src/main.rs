@@ -60,9 +60,15 @@ fn main() {
 
     println!("{:?}", map);
 
+    let map_unique_key = map.keys();
+    println!("{:?}", map_unique_key);
+
     let len_map = map.len();
     println!("{:?}", len_map);
 
+    //init empty crosstab
+    let zero_crosstab = Array::<f64, _>::zeros((len_map, len_map));
+    println!("{:?}", zero_crosstab);
     let b = (1, 3, 2);
     print_type(&b);
 }
