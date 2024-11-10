@@ -52,11 +52,13 @@ fn main() {
     let a: Array<f64, _> = zeros_with_dim((1, 3, 2));
     println!("{:?}", a);
 
-    let arr = Array::from_vec(vec![1, 2, 2, 3, 1])
-        .into_shape_with_order(ndarray::IxDyn(&[5]))
+    let arr1 = Array::from_vec(vec![0, 1, 2, 2, 2, 3, 1])
+        .into_shape_with_order(ndarray::IxDyn(&[6]))
         .unwrap();
-
-    let map = array_value_counts(&arr);
+    let arr2 = Array::from_vec(vec![0, 2, 1, 2, 2, 3, 4])
+        .into_shape_with_order(ndarray::IxDyn(&[6]))
+        .unwrap();
+    let map = array_value_counts(&arr1);
 
     println!("{:?}", map);
 
@@ -64,10 +66,23 @@ fn main() {
     println!("{:?}", map_unique_key);
 
     let len_map = map.len();
-    println!("{:?}", len_map);
+    println!("unique value of dict {:?}", len_map);
 
     //init empty crosstab
-    let zero_crosstab = Array::<f64, _>::zeros((len_map, len_map));
+    let mut zero_crosstab = Array::<i32, _>::zeros((len_map + 2, len_map + 2));
+    println!("{:?}", zero_crosstab);
+
+    for (i, a) in arr1.iter().enumerate() {
+        for (j, b) in arr2.iter().enumerate() {
+            zero_crosstab[[i, j]] += 1;
+            // println!(
+            //     "Index i : {}, Index j : {}, Value: {:?}",
+            //     i,
+            //     j,
+            //     zero_crosstab[[i, j]]
+            // );
+        }
+    }
     println!("{:?}", zero_crosstab);
     let b = (1, 3, 2);
     print_type(&b);
