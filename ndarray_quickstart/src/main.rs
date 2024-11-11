@@ -43,6 +43,15 @@ fn array_value_counts(
 fn print_type<T>(_: &T) {
     println!("{:?}", std::any::type_name::<T>());
 }
+
+use ndarray::{Array1, Axis};
+
+fn argsort<T: PartialOrd>(arr: &Array1<T>) -> Vec<usize> {
+    let mut indices: Vec<usize> = (0..arr.len()).collect();
+    indices.sort_by(|&a, &b| arr[a].partial_cmp(&arr[b]).unwrap());
+    indices
+}
+
 fn main() {
     // The Array<A, D> is parameterized by A for the element type and D for the dimensionality.
     // through turbofish syntax, and let it infer the dimensionality type
@@ -52,10 +61,10 @@ fn main() {
     let a: Array<f64, _> = zeros_with_dim((1, 3, 2));
     println!("{:?}", a);
 
-    let arr1 = Array::from_vec(vec![0, 1, 2, 2, 2, 3, 1])
+    let arr1 = Array::from_vec(vec![0, 1, 2, 2, 3, 1])
         .into_shape_with_order(ndarray::IxDyn(&[6]))
         .unwrap();
-    let arr2 = Array::from_vec(vec![0, 2, 1, 2, 2, 3, 4])
+    let arr2 = Array::from_vec(vec![0, 2, 1, 2, 3, 4])
         .into_shape_with_order(ndarray::IxDyn(&[6]))
         .unwrap();
     let map = array_value_counts(&arr1);
@@ -86,4 +95,19 @@ fn main() {
     println!("{:?}", zero_crosstab);
     let b = (1, 3, 2);
     print_type(&b);
+
+    // Basic example
+    let arr = Array1::from(vec![3.0, 1.0, 4.0, 2.0]);
+    let indices = argsort(&arr);
+
+    println!("Array: {:?}", arr);
+    println!("Sorted indices: {:?}", indices);
+
+    // Print sorted array using indices
+    let sorted: Vec<_> = indices.iter().map(|&i| arr[i]).collect();
+    println!("Sorted array: {:?}", sorted);
+
+    // Descending order
+    let desc_indices: Vec<_> = indices.into_iter().rev().collect();
+    println!("\nDescending indices: {:?}", desc_indices);
 }
