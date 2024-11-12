@@ -61,24 +61,27 @@ fn main() {
     let a: Array<f64, _> = zeros_with_dim((1, 3, 2));
     println!("{:?}", a);
 
-    let arr1 = Array::from_vec(vec![0, 1, 2, 2, 3, 1])
-        .into_shape_with_order(ndarray::IxDyn(&[6]))
-        .unwrap();
-    let arr2 = Array::from_vec(vec![0, 2, 1, 2, 3, 4])
-        .into_shape_with_order(ndarray::IxDyn(&[6]))
-        .unwrap();
-    let map = array_value_counts(&arr1);
+    let arr1: ndarray::ArrayBase<ndarray::OwnedRepr<i32>, ndarray::Dim<ndarray::IxDynImpl>> =
+        Array::from_vec(vec![0, 1, 2, 2, 3, 1])
+            .into_shape_with_order(ndarray::IxDyn(&[6]))
+            .unwrap();
+    let arr2: ndarray::ArrayBase<ndarray::OwnedRepr<i32>, ndarray::Dim<ndarray::IxDynImpl>> =
+        Array::from_vec(vec![0, 2, 1, 2, 3, 4])
+            .into_shape_with_order(ndarray::IxDyn(&[6]))
+            .unwrap();
+    let map: HashMap<&i32, i32> = array_value_counts(&arr1);
 
     println!("{:?}", map);
 
-    let map_unique_key = map.keys();
+    let map_unique_key: std::collections::hash_map::Keys<'_, &i32, i32> = map.keys();
     println!("{:?}", map_unique_key);
 
-    let len_map = map.len();
+    let len_map: usize = map.len();
     println!("unique value of dict {:?}", len_map);
 
     //init empty crosstab
-    let mut zero_crosstab = Array::<i32, _>::zeros((len_map + 2, len_map + 2));
+    let mut zero_crosstab: ndarray::ArrayBase<ndarray::OwnedRepr<i32>, ndarray::Dim<[usize; 2]>> =
+        Array::<i32, _>::zeros((len_map + 2, len_map + 2));
     println!("{:?}", zero_crosstab);
 
     for (i, a) in arr1.iter().enumerate() {
@@ -93,12 +96,13 @@ fn main() {
         }
     }
     println!("{:?}", zero_crosstab);
-    let b = (1, 3, 2);
+    let b: (i32, i32, i32) = (1, 3, 2);
     print_type(&b);
 
     // Basic example
-    let arr = Array1::from(vec![3.0, 1.0, 4.0, 2.0]);
-    let indices = argsort(&arr);
+    let arr: ndarray::ArrayBase<ndarray::OwnedRepr<f64>, ndarray::Dim<[usize; 1]>> =
+        Array1::from(vec![3.0, 1.0, 4.0, 2.0]);
+    let indices: Vec<usize> = argsort(&arr);
 
     println!("Array: {:?}", arr);
     println!("Sorted indices: {:?}", indices);
