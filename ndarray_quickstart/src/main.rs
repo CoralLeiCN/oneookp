@@ -100,8 +100,8 @@ fn main() {
     print_type(&b);
 
     // Basic example
-    let arr: ndarray::ArrayBase<ndarray::OwnedRepr<f64>, ndarray::Dim<[usize; 1]>> =
-        Array1::from(vec![3.0, 1.0, 4.0, 2.0]);
+    let arr: ndarray::ArrayBase<ndarray::OwnedRepr<i32>, ndarray::Dim<[usize; 1]>> =
+        Array1::from(vec![3, 1, 4, 2, 3]);
     let indices: Vec<usize> = argsort(&arr);
 
     println!("Array: {:?}", arr);
