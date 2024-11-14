@@ -114,4 +114,20 @@ fn main() {
     // Descending order
     let desc_indices: Vec<_> = indices.into_iter().rev().collect();
     println!("\nDescending indices: {:?}", desc_indices);
+
+    // masked the sorted array, if different from previous value
+    let masked: Vec<_> = sorted
+        .iter()
+        .scan(None, |prev, &x| {
+            let mask = match *prev {
+                Some(prev) if prev == x => false,
+                _ => {
+                    *prev = Some(x);
+                    true
+                }
+            };
+            Some((x, mask))
+        })
+        .collect();
+    println!("Masked array: {:?}", masked);
 }
