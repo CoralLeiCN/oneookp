@@ -126,8 +126,34 @@ fn main() {
                     true
                 }
             };
-            Some((x, mask))
+            Some(mask)
         })
         .collect();
     println!("Masked array: {:?}", masked);
+
+    // calculate cumulative sum for array masked
+    let cumsum: Vec<_> = masked
+        .iter()
+        .scan(0, |state, &x| {
+            *state += x as i32;
+            Some(*state)
+        })
+        .collect();
+    println!("Cumulative sum: {:?}", cumsum);
+
+    // -1 for cumsum
+    let cumsum_index: Vec<_> = cumsum.iter().map(|&x| x - 1).collect();
+    println!("Cumulative sum index: {:?}", cumsum_index);
+    // init empety ndarray
+    let mut inv_idx = Array::<i32, _>::zeros(arr.len());
+    println!("Empty array: {:?}", inv_idx);
+
+    // convert descending indices to array
+    let desc_indices: Array1<usize> = Array1::from(desc_indices);
+
+    // // replace inv_dex value by cumsum_index value
+    // for (i, &idx) in desc_indices.iter().enumerate() {
+    //     inv_idx[[i]] = cumsum_index[idx];
+    // }
+    // println!("Inverse index: {:?}", inv_idx);
 }
