@@ -102,21 +102,19 @@ fn main() {
     // Basic example
     let arr: ndarray::ArrayBase<ndarray::OwnedRepr<i32>, ndarray::Dim<[usize; 1]>> =
         Array1::from(vec![3, 1, 4, 2, 3]);
-    let indices: Vec<usize> = argsort(&arr);
+    let perm: Vec<usize> = argsort(&arr);
 
     println!("Array: {:?}", arr);
-    println!("Sorted indices: {:?}", indices);
-
-    // Print sorted array using indices
-    let sorted: Vec<_> = indices.iter().map(|&i| arr[i]).collect();
-    println!("Sorted array: {:?}", sorted);
-
+    println!("Sorted indices: {:?}", perm);
     // Descending order
-    let desc_indices: Vec<_> = indices.into_iter().rev().collect();
+    let desc_indices: Vec<_> = perm.into_iter().rev().collect();
     println!("\nDescending indices: {:?}", desc_indices);
+    // Print sorted array using indices
+    let aux: Vec<_> = desc_indices.iter().map(|&i| arr[i]).collect();
+    println!("Sorted array: {:?}", aux);
 
     // masked the sorted array, if different from previous value
-    let masked: Vec<_> = sorted
+    let masked: Vec<_> = aux
         .iter()
         .scan(None, |prev, &x| {
             let mask = match *prev {
@@ -151,6 +149,8 @@ fn main() {
     // convert descending indices to array
     let desc_indices: Array1<usize> = Array1::from(desc_indices);
 
+    let inv_idx: Vec<_> = desc_indices.iter().map(|&i| cumsum_index[i]).collect();
+    println!("Inverse index: {:?}", inv_idx);
     // // replace inv_dex value by cumsum_index value
     // for (i, &idx) in desc_indices.iter().enumerate() {
     //     inv_idx[[i]] = cumsum_index[idx];
