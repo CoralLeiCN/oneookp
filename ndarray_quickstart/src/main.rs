@@ -151,9 +151,14 @@ fn main() {
 
     let inv_idx: Vec<_> = desc_indices.iter().map(|&i| cumsum_index[i]).collect();
     println!("Inverse index: {:?}", inv_idx);
-    // // replace inv_dex value by cumsum_index value
-    // for (i, &idx) in desc_indices.iter().enumerate() {
-    //     inv_idx[[i]] = cumsum_index[idx];
-    // }
-    // println!("Inverse index: {:?}", inv_idx);
+
+    //init empty crosstab
+    let mut zero_crosstab: ndarray::ArrayBase<ndarray::OwnedRepr<i32>, ndarray::Dim<[usize; 2]>> =
+        Array::<i32, _>::zeros((len_map, len_map));
+    for ((i, a), (j, b)) in inv_idx.iter().enumerate().zip(inv_idx.iter().enumerate()) {
+        zero_crosstab[(*a as usize, *b as usize)] += 1;
+        println!("Index i : {}, Index j : {}", a, b)
+    }
+
+    println!("{:?}", zero_crosstab);
 }
