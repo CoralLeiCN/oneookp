@@ -166,5 +166,9 @@ fn main() {
 
     let mut a = a.mapv(|a: f64| a.powi(3)); // numpy equivlant of `a ** 3`; https://doc.rust-lang.org/nightly/std/primitive.f64.html#method.powi
 
-    println!("{}", a)
+    println!("{}", a);
+
+    use ndarray::prelude::*;
+    println!("{}", a[[2]]);
+    println!("{}", a.slice(s![2]));
 }
