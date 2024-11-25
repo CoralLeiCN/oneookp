@@ -161,4 +161,10 @@ fn main() {
     }
 
     println!("{:?}", zero_crosstab);
+
+    let a = Array::range(0., 10., 1.);
+
+    let mut a = a.mapv(|a: f64| a.powi(3)); // numpy equivlant of `a ** 3`; https://doc.rust-lang.org/nightly/std/primitive.f64.html#method.powi
+
+    println!("{}", a)
 }
