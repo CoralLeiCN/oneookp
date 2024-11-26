@@ -171,4 +171,15 @@ fn main() {
     use ndarray::prelude::*;
     println!("{}", a[[2]]);
     println!("{}", a.slice(s![2]));
+
+    let a = array![[3., 7., 3., 4.], [1., 4., 2., 2.], [7., 2., 4., 9.]];
+
+    println!("a = \n{:?}\n", a);
+
+    // use trait FromIterator to flatten a matrix to a vector
+    let b = Array::from_iter(a.iter());
+    println!("b = \n{:?}\n", b);
+
+    let c = b.into_shape_with_order([6, 2]).unwrap(); // consume b and generate c with new shape
+    println!("c = \n{:?}", c);
 }
